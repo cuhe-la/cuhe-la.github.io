@@ -6,10 +6,11 @@ categories: oldest_versions software
 ---
 It might sound strange to you but I love testing the early versions of software.
 
-Let's start with curl. The most earliest version on the official page is [urlget 3.5](https://curl.se/download/archeology/urlget-3.5.zip)
+Let's start our series with [curl(https://curl.se). The most earliest version on the official page is [urlget 3.5](https://curl.se/download/archeology/urlget-3.5.zip).
 
 {% highlight bash %}
-$ curl https://curl.se/download/archeology/urlget-3.5.zip --output urlget-3.5.zip && \ unzip urlget-3.5.zip -d urlget-3.5
+$ curl https://curl.se/download/archeology/urlget-3.5.zip --output urlget-3.5.zip && \
+unzip urlget-3.5.zip -d urlget-3.5
 {% endhighlight %}
 
 If you don't have curl or wget to download source code, [this](https://unix.stackexchange.com/questions/83926/how-to-download-a-file-using-just-bash-and-nothing-else-no-curl-wget-perl-et) will be helpful.
