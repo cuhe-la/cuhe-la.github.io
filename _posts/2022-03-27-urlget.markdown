@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Oldest versions!"
+title:  "Building oldest versions of software - blog series"
 date:   2022-03-27 16:35:30
-categories: oldest_versions
+categories: oldest_versions software
 ---
 It might sound strange to you but I love testing the early versions of software.
 
