@@ -14,3 +14,4 @@ Cuhela is a programmer.
 * image processing
 * gis
 * operating systems
+* python

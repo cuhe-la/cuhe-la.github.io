@@ -1,0 +1,26 @@
+---
+layout: post
+title:  "Hello World!"
+date:   2022-03-24 12:28:30
+categories: older_versions
+---
+It might sound strange to you but I love testing the early versions of software.
+
+Let's start with curl. The most earliest version on the official page is [urlget 3.5](https://curl.se/download/archeology/urlget-3.5.zip)
+
+{% highlight bash %}
+$ curl https://curl.se/download/archeology/urlget-3.5.zip --output urlget-3.5.zip && \
+unzip urlget-3.5.zip -d urlget-3.5
+{% endhighlight %}
+
+If you don't have curl or wget to download source code, [this](https://unix.stackexchange.com/questions/83926/how-to-download-a-file-using-just-bash-and-nothing-else-no-curl-wget-perl-et) will be helpful.
+
+Time to check files:
+
+{% highlight bash %}
+$ ls
+CHANGES    FILES       main.c    README     urlget.dsp  urlget.ncb
+config.h   GPL         Makefile  smakefile  urlget.dsw  urlget.opt
+COPYRIGHT  hugehelp.c  mkhelp    urlget.c   urlget.h    urlget.plg
+{% endhighlight %}
+
