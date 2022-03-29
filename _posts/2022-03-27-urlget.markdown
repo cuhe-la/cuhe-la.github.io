@@ -4,7 +4,7 @@ title:  "Building oldest versions of software - blog series"
 date:   2022-03-27 16:35:30
 categories: oldest_versions software
 ---
-It might sound strange to you but I love testing the early versions of software.
+It might sound strange to you but I love testing the early versions of software. In general it's more easy to review/understand code and mostly to be able to build code you should fix something. It means that you learn something new. :)
 
 Let's start our series with [curl](https://curl.se). The most earliest version on the official page is [urlget 3.5](https://curl.se/download/archeology/urlget-3.5.zip).
 
