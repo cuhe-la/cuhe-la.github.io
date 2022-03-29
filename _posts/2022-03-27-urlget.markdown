@@ -24,3 +24,129 @@ config.h   GPL         Makefile  smakefile  urlget.dsw  urlget.opt
 COPYRIGHT  hugehelp.c  mkhelp    urlget.c   urlget.h    urlget.plg
 {% endhighlight %}
 
+Let's try make:
+
+{% highlight bash %}
+$ make
+Makefile:24: warning: ignoring prerequisites on suffix rule definition
+gcc -DHAVE_STRCASECMP -c -g -Wall -pedantic urlget.c
+urlget.c: In function ‘urlget’:
+urlget.c:256:39: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  256 |         data->port = (unsigned short)((unsigned int)param);
+      |                                       ^
+urlget.c:277:24: warning: ISO C forbids conversion of object pointer to function pointer type [-Wpedantic]
+  277 |         data->fwrite = (size_t (*)(char *, int, int, FILE *))param;
+      |                        ^
+urlget.c:280:23: warning: ISO C forbids conversion of object pointer to function pointer type [-Wpedantic]
+  280 |         data->fread = (size_t (*)(char *, int, int, FILE *))param;
+      |                       ^
+urlget.c:282:7: warning: case value ‘4294967295’ not in enumerated type ‘UrgTag’ [-Wswitch]
+  282 |       case URGTAG_DONE: /* done with the parsing, fall through */
+      |       ^~~~
+urlget.c: In function ‘Upload’:
+urlget.c:493:18: warning: implicit declaration of function ‘time’ [-Wimplicit-function-declaration]
+  493 |   time_t start = time(NULL);
+      |                  ^~~~
+urlget.c: In function ‘_urlget’:
+urlget.c:1196:42: warning: format ‘%d’ expects argument of type ‘int’, but argument 3 has type ‘size_t’ {aka ‘long unsigned int’} [-Wformat=]
+ 1196 |       sprintf(content, "Content-length: %d\015\012",
+      |                                         ~^
+      |                                          |
+      |                                          int
+      |                                         %ld
+ 1197 |               strlen(data->postfields)) ;
+      |               ~~~~~~~~~~~~~~~~~~~~~~~~    
+      |               |
+      |               size_t {aka long unsigned int}
+urlget.c:765:10: warning: variable ‘nread’ set but not used [-Wunused-but-set-variable]
+  765 |   size_t nread;
+      |          ^~~~~
+urlget.c:1189:37: warning: ‘%s’ directive writing up to 511 bytes into a region of size 491 [-Wformat-overflow=]
+ 1189 |               "Authorization: Basic %s\015\012",
+      |                                     ^~
+ 1190 |               authorization);
+      |               ~~~~~~~~~~~~~          
+urlget.c:1188:7: note: ‘sprintf’ output between 24 and 535 bytes into a destination of size 512
+ 1188 |       sprintf(userpwd,
+      |       ^~~~~~~~~~~~~~~~
+ 1189 |               "Authorization: Basic %s\015\012",
+      |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1190 |               authorization);
+      |               ~~~~~~~~~~~~~~
+gcc -DHAVE_STRCASECMP -c -g -Wall -pedantic main.c
+gcc -DHAVE_STRCASECMP -c -g -Wall -pedantic hugehelp.c
+hugehelp.c: In function ‘hugehelp’:
+hugehelp.c:255:2: warning: string length ‘8221’ is greater than the length ‘4095’ ISO C99 compilers are required to support [-Woverlength-strings]
+  255 |  ) ;
+      |  ^
+gcc  -o urlget urlget.o main.o hugehelp.o
+{% endhighlight %}
+
+And voila!
+
+{% highlight bash %}
+$ ./urlget 
+urlget v3.5
+ usage: urlget [options...] <url>
+ options: (H) means HTTP only (F) means FTP only
+  -d/--data          POST data. (H)
+  -f/--fail          Fail silently (no output at all) on errors. (H)
+  -h/--help          Large help text
+  -i/--include       Include the HTTP-header in the output (H)
+  -I/--head          Fetch the HTTP-header only (HEAD)! (H)
+  -k/--keep-alive    Use Keep-Alive connection (H)
+  -l/--list-only     List only names of an FTP directory (F)
+  -m/--max-time <seconds> Maximum time allowed for the download
+  -o/--output <file> Write output to <file> instead of stdout
+  -O/--remote-name   Write output to a file named as the remote file
+  -p/--port <port>   Use port other than default for current protocol.
+  -r/--range <range> Retrieve a byte range from a HTTP/1.1 server (H)
+  -s/--silent        Silent mode. Don't show progress info
+  -t/--upload        Transfer/upload stdin to remote site. (F)
+  -T/--upload-file <file> Transfer/upload <file> to remote site. (F)
+  -u/--user <user:password> Specify user and password to use when fetching
+  -v/--verbose       Makes the fetching more talkative
+  -V/--version       Outputs version number then quits
+  -x/--proxy <host>  Use proxy. (Default port is 1080)
+{% endhighlight %}
+
+Let's compare curl and urlget output:
+
+
+{% highlight bash %}
+$ curl -I www.google.com | cat -A
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+HTTP/1.1 200 OK^M$
+Content-Type: text/html; charset=ISO-8859-1^M$
+P3P: CP="This is not a P3P policy! See g.co/p3phelp for more info."^M$
+Date: Tue, 29 Mar 2022 20:26:37 GMT^M$
+Server: gws^M$
+X-XSS-Protection: 0^M$
+X-Frame-Options: SAMEORIGIN^M$
+Transfer-Encoding: chunked^M$
+Expires: Tue, 29 Mar 2022 20:26:37 GMT^M$
+Cache-Control: private^M$
+Set-Cookie: 1P_JAR=2022-03-29-20; expires=Thu, 28-Apr-2022 20:26:37 GMT; path=/; domain=.google.com; Secure^M$
+Set-Cookie: NID=511=BEXz1qnaghcbRsKRDmX5KuB2Fb8DOmu6E8aXJYO5e2EkuO7ty7BdphwYP8hQ9dOlf2bjKC8bjXheJ3at6HPqLRYzD5kytQ_r5bNGj2YTXy3Sdbh7jLh05sGh1FPrN3DRKrD_7kq-FfuhebkHTUva5osutsK7aU7GbVYOKv_CEm4; expires=Wed, 28-Sep-2022 20:26:37 GMT; path=/; domain=.google.com; HttpOnly^M$
+^M$
+{% endhighlight %}
+
+{% highlight bash %}
+$ ./urlget -I www.google.com | cat -A
+674 bytes received in 1 seconds (674 bytes/sec)
+HTTP/1.0 200 OK$
+Content-Type: text/html; charset=ISO-8859-1$
+P3P: CP="This is not a P3P policy! See g.co/p3phelp for more info."$
+Date: Tue, 29 Mar 2022 20:27:16 GMT$
+Server: gws$
+X-XSS-Protection: 0$
+X-Frame-Options: SAMEORIGIN$
+Expires: Tue, 29 Mar 2022 20:27:16 GMT$
+Cache-Control: private$
+Set-Cookie: 1P_JAR=2022-03-29-20; expires=Thu, 28-Apr-2022 20:27:16 GMT; path=/; domain=.google.com; Secure$
+Set-Cookie: NID=511=tM2rQN1LAcyc1kqKh1ruE8-8PbN8f16mPdjK7O6KU71Fglh58n_5scVE90cJTxI2WblgegcCK8HiyMvmFCdtY-dFPnUPfFHvuSk1YRlg9e6gD6KgP0U1jeyVKS-IrijILl8sMZFvSmpxEHNjgTCvYZq4F91z7E6yuj2UlAvZ8yY; expires=Wed, 28-Sep-2022 20:27:16 GMT; path=/; domain=.google.com; HttpOnly$
+{% endhighlight %}
+
+Almost same, except CRLF - LF nuance. [This](https://curl.se/mail/archive-2012-04/0092.html) explains RFC2616's requirement about headers termination. It seems urlget modifies the line terminator.
